@@ -1,0 +1,61 @@
+#include<stdio.h>
+
+void main()
+{
+  int n, quantum, i, j;
+  printf("Enter the number of processes: \n");
+  scanf("%d", &n);
+
+  int bt[n], rt[n], wt[n], tt[n];
+
+  for (i = 0; i < n; i++)
+  {
+    printf("Enter burst time for process %d: \n", i + 1);
+    scanf("%d", &bt[i]);
+    rt[i] = bt[i];
+  }
+
+  printf("Enter quantum time: \n");
+  scanf("%d", &quantum);
+
+  int time = 0, done = 0;
+  while (done != n)
+  {
+    for (i = 0; i < n; i++)
+    {
+      if (rt[i] > 0)
+      {
+        if (rt[i] > quantum)
+        {
+          time += quantum;
+          rt[i] -= quantum;
+        }
+        else
+        {
+          time += rt[i];
+          wt[i] = time - bt[i];
+          rt[i] = 0;
+          tt[i] = time;
+          done++;
+        }
+      }
+    }
+  }
+
+  float twt = 0, ttt = 0;
+  for (i = 0; i < n; i++) {
+    twt += wt[i];
+    ttt += tt[i];
+  }
+
+  for(i=0;i<n;i++)
+  {
+    printf("Process:%d \nBurst Time:%d \nWaiting Time:%d \nTurnaround Time:%d \n\n",i + 1,bt[i],wt[i],tt[i]);
+  }
+
+  printf("Average waiting time: %f\n", twt / n);
+  printf("Average turnaround time: %f\n", ttt / n);
+  printf("Total Waiting time: %f\n\n", twt);
+  printf("Total Turnaround time: %f\n", ttt);
+
+}
